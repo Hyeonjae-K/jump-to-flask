@@ -12,3 +12,5 @@ def create_app():
     @app.route('/')
     def hello_pybo():
         return 'Hello, Pybo!'
+
+    return app
