@@ -7,10 +7,8 @@ def create_app():
     # pybo.py라는 모듈이 실행되는 것이므로 'pybo'라는 문자열이 담김
     app = Flask(__name__)
 
-    # 특정 주소에 접속시 다음 함수를 호출하는 데코레이터
-    # 데코레이터: 함수를 변경하지 않고 기능을 덧붙일 수 있도록 해주는 함수
-    @app.route('/')
-    def hello_pybo():
-        return 'Hello, Pybo!'
+    # 블루프린트를 사용하도록 변경, bp 등록
+    from .views import main_views
+    app.register_blueprint(main_views.bp)
 
     return app
