@@ -1,4 +1,26 @@
+<!-- 질문 제목 출력 -->
 <h1>{{ question.subject }}</h1>
+<!-- 질문 내용 출력 -->
 <div>
     {{ question.content }}
 </div>
+
+<!-- 답변의 개수 출력 -->
+<!-- |는 필터로 |length 사용시 객체의 길이 반환 -->
+<h5>{{ question.answer_set|length }}개의 답변이 있습니다.</h5>
+<div>
+    <ul>
+        <!-- 반복문을 돌며 각각의 답변 출력 -->
+        {% for answer in question.answer_set %}
+        <li>{{ answer.content }}</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<!-- url_for를 통해 폼이 전달될 URL 지정 -->
+<form action="{{ url_for('answer.create', question_id=question.id) }}" method="POST">
+    <!-- 답변 입력을 위한 덱스트 창(textarea) -->
+    <textarea name="content" id="content" rows="15"></textarea>
+    <!-- 답변등록 버튼 -->
+    <input type="submit" value="답변등록">
+</form>
