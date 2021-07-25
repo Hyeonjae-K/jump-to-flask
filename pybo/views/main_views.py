@@ -1,4 +1,5 @@
-from flask import Blueprint
+from flask import Blueprint, url_for
+from werkzeug.utils import redirect
 
 # Blurprint 클래스로 생성한 객체
 bp = Blueprint('main', __name__, url_prefix='/')
@@ -13,4 +14,7 @@ def hello_pybo():
 
 @bp.route('/')
 def index():
-    return 'Pybo index'
+    # redirect를 통해 입력받은 URL(url_for('question._list')로 리다이렉트
+    # url_for는 question 블루프린트 URL + _list 함수에 등록된 URL 반환
+    # 즉, /question/ + /list = /question/list
+    return redirect(url_for('question._list'))

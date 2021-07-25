@@ -1,0 +1,17 @@
+<!-- question_list가 있다면 -->
+{% if question_list %}
+<ul>
+    <!-- question_list에 있는 각각의 질문 제목 출력 및 하이퍼링크 연결 -->
+    {% for question in question_list %}
+    <!-- question.detail 라우트 함수로 URL을 찾음 -->
+    <!-- question.detail함수는 매개변수가 필요하므로 question.id 전달 -->
+    <li><a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a></li>
+    <!-- 반복문 종료 -->
+    {% endfor %}
+</ul>
+<!-- 그렇지 않으면(=question_list가 비어있다면) -->
+{% else %}
+<!-- 다음 출력 -->
+<p>질문이 없습니다.</p>
+<!-- 조건문 종료 -->
+{% endif %}
