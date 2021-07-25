@@ -1,17 +1,39 @@
-<!-- question_list가 있다면 -->
-{% if question_list %}
-<ul>
-    <!-- question_list에 있는 각각의 질문 제목 출력 및 하이퍼링크 연결 -->
-    {% for question in question_list %}
-    <!-- question.detail 라우트 함수로 URL을 찾음 -->
-    <!-- question.detail함수는 매개변수가 필요하므로 question.id 전달 -->
-    <li><a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a></li>
-    <!-- 반복문 종료 -->
-    {% endfor %}
-</ul>
-<!-- 그렇지 않으면(=question_list가 비어있다면) -->
-{% else %}
-<!-- 다음 출력 -->
-<p>질문이 없습니다.</p>
-<!-- 조건문 종료 -->
-{% endif %}
+<!-- 스타일 적용 -->
+<link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+
+<div class="container my-3">
+    <table class="table">
+        <thead>
+        <tr class="thead-dark">
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성일시</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- question_list가 있다면 -->
+        {% if question_list %}
+        <!-- question_list에 있는 질문들의 제목 출력 및 하이퍼링크 연결 -->
+        {% for question in question_list %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>
+                <!-- question.detail 라우트 함수로 URL을 찾음 -->
+                <!-- question.detail함수는 매개변수가 필요하므로 question.id 전달 -->
+                <a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a>
+            </td>
+            <td>{{ question.create_date }}</td>
+        </tr>
+        <!-- 반복문 종료 -->
+        {% endfor %}
+        <!-- 그렇지 않으면(=question_list가 비어있다면) -->
+        {% else %}
+        <tr>
+            <!-- 다음 출력 -->
+            <td colspan="3">질문이 없습니다.</td>
+        </tr>
+        <!-- 조건문 종료 -->
+        {% endif %}
+        </tbody>
+    </table>
+</div>
