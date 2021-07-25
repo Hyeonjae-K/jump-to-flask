@@ -1,5 +1,11 @@
-from flask import Blueprint, render_template
-from pybo.models import Question
+from datetime import datetime
+
+from flask import Blueprint, render_template, request, url_for
+from werkzeug.utils import redirect
+
+from .. import db
+from ..models import Question
+from ..forms import QuestionForm, AnswerForm
 
 bp = Blueprint('question', __name__, url_prefix='/question')
 
@@ -15,5 +21,25 @@ def _list():
 @bp.route('/detail/<int:question_id>/')
 # question_id에 라우트 매핑 규칙에 사용한 <int:question_id>가 전달
 def detail(question_id):
+    form = AnswerForm()
     question = Question.query.get_or_404(question_id)
-    return render_template('question/question_detail.html', question=question)
+    return render_template('question/question_detail.html', question=question, form=form)
+
+
+@bp.route('/create/', methods=['GET', 'POST'])
+def create():
+    # QuestionForm(질문 등록을 할 때 사용하는 플라스크 폼) 객체 생성
+    form = QuestionForm()
+    # request.method를 통해 요청된 전송 방식 파악
+    # form.validate_on_submit을 통해 데이터 적합성 점검
+    if request.method == 'POST' and form.validate_on_submit():
+        # form.'target'.data를 통해 전송받은 데이터에서 원하는 부분 추출
+        question = Question(subject=form.subject.data,
+                            content=form.content.data, create_date=datetime.now())
+        # 데이터베이스에 질문 저장
+        db.session.add(question)
+        db.session.commit()
+        # main.index 페이지로 이동
+        return redirect(url_for('main.index'))
+    # 랜더링할 때 form 객체 전달
+    return render_template('question/question_form.html', form=form)

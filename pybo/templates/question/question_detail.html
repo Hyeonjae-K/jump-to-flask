@@ -34,6 +34,17 @@
     {% endfor %}
     <!-- url_for를 통해 폼이 전달될 URL 지정 -->
     <form action="{{ url_for('answer.create', question_id=question.id) }}" method="post" class="my-3">
+        <!-- 실제 웹 사이트에서 만들어진 데이터인지를 검증하는 CSRF 토큰 추가 -->
+        {{ form.csrf_token }}
+        
+        <!-- 오류표시 Start -->
+        {% for field, errors in form.errors.items() %}
+        <div class="alert alert-danger" role="alert">
+            <strong>{{ form[field].label }}</strong>: {{ ', '.join(errors) }}
+        </div>
+        {% endfor %}
+        <!-- 오류표시 End -->
+
         <div class="form-group">
             <!-- 답변 입력을 위한 텍스트 창(textarea) -->
             <textarea name="content" id="content" class="form-control" rows="10"></textarea>
