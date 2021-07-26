@@ -23,6 +23,11 @@
                 <!-- question.detail 라우트 함수로 URL을 찾음 -->
                 <!-- question.detail함수는 매개변수가 필요하므로 question.id 전달 -->
                 <a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a>
+                <!-- 만약 답변이 있을 경우 -->
+                {% if question.answer_set|length > 0 %}
+                <!-- 답변의 개수 출력 -->
+                <span class="text-danger small ml-2">{{ question.answer_set|length }}</span>
+                {% endif %}
             </td>
             <!-- datetime 필터 적용 -->
             <td>{{ question.create_date|datetime }}</td>
