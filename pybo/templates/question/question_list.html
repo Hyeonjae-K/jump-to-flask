@@ -14,7 +14,8 @@
         <!-- question_list가 있다면 -->
         {% if question_list %}
         <!-- question_list에 있는 질문들의 제목 출력 및 하이퍼링크 연결 -->
-        {% for question in question_list %}
+        <!-- question_list가 Pagination 객체로 변경되었으므로 items 함수를 통해 호출 -->
+        {% for question in question_list.items %}
         <tr>
             <td>{{ loop.index }}</td>
             <td>
@@ -36,6 +37,61 @@
         {% endif %}
         </tbody>
     </table>
+
+    <!-- 페이지 이동 기능 -->
+    <ul class="pagination justify-content-center">
+        <!-- 이전 페이지가 있을 경우 -->
+        {% if question_list.has_prev %}
+        <!-- 이전 버튼 출력 -->
+        <li class="page-item">
+            <a class="page-link" href="?page={{ question_list.prev_num }}">이전</a>
+        </li>
+        <!-- 이전 페이지가 없을 경우 -->
+        {% else %}
+        <!-- 이전 버튼 비활성화 및 출력 -->
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+        </li>
+        {% endif %}
+        <!-- iter_pages = 페이지 범위([1, 2, 3, 4, 5, None, 30, 31]) -->
+        {% for page_num in question_list.iter_pages() %}
+            <!-- 만약 page_num이 None이 아닐 경우 -->
+            {% if page_num %}
+                <!-- 만약 page_num이 현재 페이지가 아닐 경우 -->
+                {% if page_num != question_list.page %}
+                <!-- 해당 페이지로 하이퍼링크 지정 및 페이지 출력 -->
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                </li>
+                <!-- 만약 page_num이 현재 페이지일 경우 -->
+                {% else %}
+                <!-- 활성화 표시와 하이퍼 링크 현재 페이지 지정 및 페이지 출력 -->
+                <li class="page-item active" aria-current="page">
+                    <a class="page-link" href="#">{{ page_num }}</a>
+                </li>
+                {% endif %}
+            <!-- 만약 page_num이 None일 경우 -->
+            {% else %}
+                <li class="disabled">
+                    <!-- ... 출력 -->
+                    <a class="page-link" href="#">...</a>
+                </li>
+           {% endif %}
+        {% endfor %}
+        <!-- 다음 페이지가 있을 경우 -->
+        {% if question_list.has_next %}
+        <!-- 다음 버튼 출력 -->
+        <li class="page-item">
+            <a class="page-link" href="?page={{ question_list.next_num }}">다음</a>
+        </li>
+        <!-- 다음 페이지가 없을 경우 -->
+        {% else %}
+        <!-- 다음 버튼 비활성화 및 출력 -->
+        <li class="page-item disabled">
+            <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+        </li>
+        {% endif %}
+    </ul>
 
     <!-- 질문 등록 버튼 생성 -->
     <a href="{{ url_for('question.create') }}" class="btn btn-primary">질문 등록하기</a>
