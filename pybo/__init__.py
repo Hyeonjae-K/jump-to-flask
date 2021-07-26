@@ -30,4 +30,9 @@ def create_app():
     app.register_blueprint(question_views.bp)
     app.register_blueprint(answer_views.bp)
 
+    # 생성한 필터 import
+    from .filter import format_datetime
+    # 'datetime'이라는 이름으로 필터 등록
+    app.jinja_env.filters['datetime'] = format_datetime
+
     return app

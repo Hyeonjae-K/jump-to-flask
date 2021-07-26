@@ -23,7 +23,8 @@
                 <!-- question.detail함수는 매개변수가 필요하므로 question.id 전달 -->
                 <a href="{{ url_for('question.detail', question_id=question.id) }}">{{ question.subject }}</a>
             </td>
-            <td>{{ question.create_date }}</td>
+            <!-- datetime 필터 적용 -->
+            <td>{{ question.create_date|datetime }}</td>
         </tr>
         <!-- 반복문 종료 -->
         {% endfor %}
