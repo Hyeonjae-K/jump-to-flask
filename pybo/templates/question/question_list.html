@@ -17,7 +17,8 @@
         <!-- question_list가 Pagination 객체로 변경되었으므로 items 함수를 통해 호출 -->
         {% for question in question_list.items %}
         <tr>
-            <td>{{ loop.index }}</td>
+            <!-- 번호 = 전체 게시물 개수 - (현재 페이지 - 1) * 페이지당 게시물 개수 - 나열 인덱스 -->
+            <td>{{ question_list.total - ((question_list.page - 1) * question_list.per_page) - loop.index0 }}</td>
             <td>
                 <!-- question.detail 라우트 함수로 URL을 찾음 -->
                 <!-- question.detail함수는 매개변수가 필요하므로 question.id 전달 -->
