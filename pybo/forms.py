@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField
-from wtforms.validators import DataRequired
+from wtforms import StringField, TextAreaField, PasswordField
+from wtforms.fields.html5 import EmailField
+from wtforms.validators import DataRequired, Length, EqualTo, Email
 
 
 # Flask-WTF 모듈의 FlaskForm 클래스 상속받음
@@ -17,3 +18,15 @@ class QuestionForm(FlaskForm):
 
 class AnswerForm(FlaskForm):
     content = TextAreaField('내용', validators=[DataRequired('내용은 필수입력 항목입니다.')])
+
+
+class UserCreateForm(FlaskForm):
+    # 길이를 3~25자로 제한
+    username = StringField('사용자이름', validators=[
+                           DataRequired(), Length(min=3, max=25)])
+    password1 = PasswordField('비밀번호', validators=[DataRequired()])
+    # 비밀번호 확인을 위해 EqualTo 검증 추가
+    password2 = PasswordField('비밀번호확인', validators=[
+                              DataRequired(), EqualTo('password1', '비밀번호가 일치하지 않습니다')])
+    # 이메일 형식 검증을 위해 Email 추가
+    email = EmailField('이메일', validators=[DataRequired(), Email()])

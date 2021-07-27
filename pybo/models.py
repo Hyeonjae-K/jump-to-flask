@@ -2,6 +2,7 @@ from pybo import db
 
 
 # 모델의 기본 클래스인 db.Model을 상속받음
+# 제출된 질문을 저장할 모델
 class Question(db.Model):
     # 고유 번호, 제목, 내용, 작성일시
     # id는 기본 키(primary_key)로 데이터를 구분하는 유효한 값이므로 중복 X
@@ -12,6 +13,7 @@ class Question(db.Model):
     create_date = db.Column(db.DateTime(), nullable=False)
 
 
+# 질문에 달린 답변을 저장할 모델
 class Answer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     # 기존 모델(질문 모델)과 연결(외부 키(foreign key))
@@ -24,3 +26,12 @@ class Answer(db.Model):
     question = db.relationship('Question', backref=db.backref('answer_set'))
     content = db.Column(db.Text(), nullable=False)
     create_date = db.Column(db.DateTime(), nullable=False)
+
+
+# 로그인을 위한 회원정보를 저장할 모델
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    # unique 옵션을 통해 중복을 허용하지 않음
+    username = db.Column(db.String(150), unique=True, nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
