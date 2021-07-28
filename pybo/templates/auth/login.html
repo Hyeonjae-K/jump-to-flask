@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-3">
+    <!-- POST 방식으로 제출될 폼 생성 -->
+    <form method="POST" class="post-form">
+        <!-- 실제 웹 사이트에서 만들어진 데이터인지를 검증하는 CSRF 토큰 추가 -->
+        {{ form.csrf_token }}
+        <!-- 오류 표시 -->
+        {% include "form_errors.html" %}
+        <!-- 사용자 이름 입력 -->
+        <div class="form-group">
+            <label for="username">사용자 이름</label>
+            <input type="text" class="form-control" name="username" id="username" value="{{ form.username.data or '' }}">
+        </div>
+        <!-- 비밀번호 입력 -->
+        <div class="form-group">
+            <label for="password">비밀번호</label>
+            <input type="password" class="form-control" name="password" id="password" value="{{ form.password.data or '' }}">
+        </div>
+        <!-- 버튼 클릭시 POST 방식으로 /auth/login/ URL에 폼 전송 -->
+        <!-- action이 없을 경우 현재 URL로 폼이 전송됨 -->
+        <button type="submit" class="btn btn-primary">로그인</button>
+    </form>
+</div>
+{% endblock %}

@@ -30,3 +30,11 @@ class UserCreateForm(FlaskForm):
                               DataRequired(), EqualTo('password1', '비밀번호가 일치하지 않습니다')])
     # 이메일 형식 검증을 위해 Email 추가
     email = EmailField('이메일', validators=[DataRequired(), Email()])
+
+
+class UserLoginForm(FlaskForm):
+    # username 필드 추가
+    username = StringField('사용자이름', validators=[
+                           DataRequired(), Length(min=3, max=25)])
+    # password 필드 추가
+    password = PasswordField('비밀번호', validators=[DataRequired()])
